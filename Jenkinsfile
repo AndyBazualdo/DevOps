@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'master'}
+    agent { label'master'}
     environment {
         //Docker credentials
         DOCKER_USER_NAME = 'gato756'
@@ -11,6 +11,8 @@ pipeline {
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
         //TAG = '${BUILD_NUMBER}'
+        SMOKE_TEST_RESULT= ''
+        E_TO_E_RESULT= ''
     }
     stages {
         stage('Build') {
@@ -18,7 +20,7 @@ pipeline {
                 docker { image '${DOCKER_REPOSITORY}:${DOCKER_TAG_CURRENT}' }
             }
             steps {
-                //sh 'printenv'
+                sh 'printenv'
                 sh 'chmod +x gradlew'
                 sh './gradlew build'
             }
@@ -49,8 +51,8 @@ pipeline {
         stage('Smoke Test'){
             steps{
                 echo 'Start smoke test on develoment environment'
-                //hacer que este stage pase si o si opc1 echo 0
-                sh 'exit 0'
+                exit 0
+                //error("Smoke test results have errors deployment")
             }
         }
         stage ('Push to docker registry'){
@@ -86,6 +88,7 @@ pipeline {
                      to: 'fernando.hinojosa@live.com'
         }
         always {
+            sh 'docker rmi $(docker images prune -q)'
             cleanWs deleteDirs: true, notFailBuild: true
         }
     }
