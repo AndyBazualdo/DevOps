@@ -1,5 +1,5 @@
 pipeline {
-    agent label 'master'
+    agent { label 'master'}
     environment {
         //Docker credentials
         DOCKER_USER_NAME = 'gato756'
