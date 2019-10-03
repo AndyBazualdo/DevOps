@@ -75,9 +75,8 @@ pipeline {
         }
         stage('End to end testing'){
             steps{
-                //var state
-                // echo $1 build= failed
-                echo 'holas'
+                echo 'End to end testing is in progress.....'
+                sh 'exit 0'
             }
         }
     }
