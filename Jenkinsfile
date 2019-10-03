@@ -79,6 +79,7 @@ pipeline {
             steps{
                 //var state
                 // echo $1 build= failed
+                echo 'holas'
             }
         }
 
