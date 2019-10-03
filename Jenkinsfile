@@ -55,8 +55,8 @@ pipeline {
             when {
                 expression { branch ==~ /(master|develop)/ }
                 anyOf {
-                    environment TAG: '', value: 'master'
-                    environment TAG: 'SNAPSHOT-${TAG}', value: 'develop'
+                    environment name: '${TAG}', value: 'master'
+                    environment name: 'SNAPSHOT-${TAG}', value: 'develop'
                 }
             }
             steps {
