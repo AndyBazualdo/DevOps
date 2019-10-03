@@ -18,10 +18,9 @@ pipeline {
                 docker { image '${DOCKER_REPOSITORY}:${DOCKER_TAG_CURRENT}' }
             }
             steps {
-                sh 'printenv'
+                //sh 'printenv'
                 sh 'chmod +x gradlew'
                 sh './gradlew build'
-                sh 'echo ${NODE_NAME}'
             }
             post {
                 always {
@@ -38,29 +37,28 @@ pipeline {
                 //sh './gradlew sonarqube -Dsonar.projectKey=andybazualdo -Dsonar.organization=andybazualdo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=16e96c988a578b8f8dd2b8bf381c19fcc11194f3'
             }
         }
-        stage('Copy Artifacts') {
-            steps {
-                sh 'echo Start Coping .......'
-                sh 'ls -al'
-                sh 'pwd'
+        stage('Deploy to Dev'){
+            agent{label'master'}
+            steps{
                 copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: lastWithArtifacts(), target: './jar'
-                //sh 'ls -al jar'
-                //sh 'docker ps -a'
+                sh 'echo deploying into development .......'
+                sh 'docker-compose up'
+            }
+        } 
+        stage('Smoke Test'){
+            steps{
+                echo 'Start smoke test on develoment environment'
+                //hacer que este stage pase si o si opc1 echo 0
             }
         }
-        stage('Docker push develop') {
-            when { branch "develop" }
-            steps {
-                sh 'ls -al'
-                sh 'pwd'
-                sh 'echo Start updating to docker hub .......'
-                sh 'echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USER_NAME} --password-stdin'
-                sh 'docker build -t ${DOCKER_REPOSITORY}:DEVELOP-${TAG} .'
-                sh 'docker push ${DOCKER_REPOSITORY}:DEVELOP-${TAG}'
+        stage ('Push to docker registry'){
+            when {
+                expression { branch ==~ /(master|develop)/ }
+                anyOf {
+                    environment TAG: '', value: 'master'
+                    environment TAG: 'SNAPSHOT-${TAG}', value: 'develop'
+                }
             }
-        }
-        stage('Docker push master') {
-            when { branch "master" }
             steps {
                 sh 'ls -al'
                 sh 'pwd'
@@ -70,30 +68,20 @@ pipeline {
                 sh 'docker push ${DOCKER_REPOSITORY}:${TAG}'
             }
         }
-        stage('Deploy to development'){
-            agent{label'master'}
-            steps{
-                sh 'echo ${NODE_NAME}'
-                sh 'echo deploying into development .......'
-            }
-        }        
-        stage('Unit test'){
-            steps{
-                sh 'echo executing Unit tests .......'
-            }
-        }
         stage('Promote to QA'){
             agent{label'slave01'}
             steps{
-                sh 'docker ps -a'
                 sh 'echo deploying into QA enviroment .......'
+                sh 'docker-compose -f docker-compose-promote up'
             }
         }
-        stage('Tests'){
+        stage('End to end testing'){
             steps{
-                sh 'echo  making test.......'
+                //var state
+                // echo $1 build= failed
             }
         }
+
     }
     post{
        failure {
