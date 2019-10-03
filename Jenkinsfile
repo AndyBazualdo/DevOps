@@ -52,13 +52,7 @@ pipeline {
             }
         }
         stage ('Push to docker registry'){
-            when {
-                expression { branch ==~ /(master|develop)/ }
-                anyOf {
-                    environment name: '${TAG}', value: 'master'
-                    environment name: 'SNAPSHOT-${TAG}', value: 'develop'
-                }
-            }
+            when { anyOf { branch 'master'; branch 'develop' } }
             steps {
                 sh 'ls -al'
                 sh 'pwd'
