@@ -10,7 +10,7 @@ pipeline {
         //DOCKER_TAG_CURRENT = 'latest'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
-        TAG = '${BUILD_NUMBER}'
+        //TAG = '${BUILD_NUMBER}'
     }
     stages {
         stage('Build') {
@@ -61,8 +61,8 @@ pipeline {
             steps {
                 sh 'echo Start updating to docker hub .......'
                 sh 'echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USER_NAME} --password-stdin'
-                sh 'docker build -t ${DOCKER_REPOSITORY}:${TAG} .'
-                sh 'docker push ${DOCKER_REPOSITORY}:${TAG}'
+                sh 'docker build -t ${DOCKER_REPOSITORY}:${BUILD_NUMBER} .'
+                sh 'docker push ${DOCKER_REPOSITORY}:${BUILD_NUMBER}'
             }
         }
         stage('Promote to QA'){
