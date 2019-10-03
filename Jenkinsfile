@@ -42,7 +42,7 @@ pipeline {
             steps{
                 copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: lastWithArtifacts(), target: './jar'
                 sh 'echo deploying into development .......'
-                //sh 'docker-compose up'
+                sh 'docker-compose up'
             }
         } 
         stage('Smoke Test'){
@@ -52,7 +52,9 @@ pipeline {
             }
         }
         stage ('Push to docker registry'){
-            when { anyOf { branch 'master'; branch 'develop' } }
+            when {
+                anyOf { branch 'master'; branch 'develop' }
+            }
             steps {
                 sh 'ls -al'
                 sh 'pwd'
@@ -66,7 +68,7 @@ pipeline {
             agent{label'slave01'}
             steps{
                 sh 'echo deploying into QA enviroment .......'
-                //sh 'docker-compose -f docker-compose-promote up'
+                sh 'docker-compose -f docker-compose-promote up'
             }
         }
         stage('End to end testing'){
