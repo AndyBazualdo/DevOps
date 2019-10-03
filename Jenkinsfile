@@ -10,7 +10,7 @@ pipeline {
         //DOCKER_TAG_CURRENT = 'latest'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
-        TAG = BUILD_NUMBER
+        TAG = '${BUILD_NUMBER}'
     }
     stages {
         stage('Build') {
