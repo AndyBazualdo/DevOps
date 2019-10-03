@@ -53,7 +53,8 @@ pipeline {
         }
         stage ('Push to docker registry'){
             when {
-                anyOf {branch 'master'; branch 'develop'}
+                //anyOf {branch 'master'; branch 'develop'}
+                branch 'develop'
             }
             steps {
                 sh 'ls -al'
