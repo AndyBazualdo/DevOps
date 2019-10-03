@@ -43,7 +43,7 @@ pipeline {
                 copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: lastWithArtifacts(), target: './jar'
                 sh 'echo deploying into development .......'
                 //sh 'docker-compose build'
-                //sh 'docker-compose up'
+                sh 'docker-compose up'
             }
         } 
         stage('Smoke Test'){
@@ -55,8 +55,7 @@ pipeline {
         }
         stage ('Push to docker registry'){
             when {
-                //anyOf {branch 'master'; branch 'develop'}
-                branch 'develop'
+                anyOf {branch 'master'; branch 'develop'}
             }
             steps {
                 sh 'echo Start updating to docker hub .......'
