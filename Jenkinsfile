@@ -43,7 +43,7 @@ pipeline {
                 copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: lastWithArtifacts(), target: './jar'
                 sh 'echo deploying into development .......'
                 //sh 'docker-compose build'
-                sh 'docker-compose up'
+                //sh 'docker-compose up'
             }
         } 
         stage('Smoke Test'){
