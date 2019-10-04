@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy to Dev'){
             agent{label'master'}
             steps{
-                copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: especific('${BUIL_NUMBER}')
+                copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs*.jar', projectName: '${JOB_NAME}', selector: specific('${BUIL_NUMBER}')
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
