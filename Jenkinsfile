@@ -44,6 +44,7 @@ pipeline {
             steps{
                 //copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs/*.jar', projectName: '${JOB_NAME}', selector: specific('${BUIL_NUMBER}')
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
+                stash includes: '**/*/*.jar', name: 'jar'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
@@ -63,11 +64,12 @@ pipeline {
                 anyOf {branch 'master'; branch 'develop'}
             }
             steps {
+                unstash 'jar'
                 sh 'ls -al'
                 sh 'pwd'
                 sh 'echo Start updating to docker hub .......'
-                sh 'echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USER_NAME} --password-stdin'
-                sh 'docker build -t ${DOCKER_REPOSITORY}:${BUILD_NUMBER} .'
+                sh 'docker login -username ${DOCKER_USER_NAME} -password ${DOCKER_PASSWORD}'
+                sh 'docker build -t ${DOCKER_REPOSITORY}:${   } .'
                 sh 'docker push ${DOCKER_REPOSITORY}:${BUILD_NUMBER}'
             }
         }
