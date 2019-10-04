@@ -17,7 +17,7 @@ services:
       MYSQL_PASSWORD: userpass
       MYSQL_DATABASE: myimage_db
       volumes:
-        -dbdata: ./db.sql:/docker-entrypoint-initdb.d
+       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     ports:
       - 3306:3306
     network_mode: bridge
