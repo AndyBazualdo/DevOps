@@ -62,7 +62,7 @@ pipeline {
                 anyOf {branch 'master'; branch 'develop'}
             }
             steps {
-                sh 'ls -al'
+                sh 'ls -al build/libs/*'
                 sh 'pwd'
                 sh 'echo Start updating to docker hub .......'
                 sh 'echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USER_NAME} --password-stdin'
