@@ -16,4 +16,4 @@ services:
       MYSQL_ROOT_PASSWORD: 0123456
     ports:
       - 3306:3306
-    network_mode bridge
+    network_mode: bridge
