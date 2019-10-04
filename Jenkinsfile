@@ -28,8 +28,6 @@ pipeline {
                 always {
                     junit 'build/test-results/test/*.xml'
                     archiveArtifacts 'build/libs/*.jar'
-                    sh 'ls -al'
-                    sh 'pwd'
                 }
             }
         }
@@ -42,15 +40,12 @@ pipeline {
         stage('Deploy to Dev'){
             agent{label'master'}
             steps{
-                //copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs/*.jar', projectName: '${JOB_NAME}', selector: specific('${BUIL_NUMBER}')
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 stash includes: '**/*/*.jar', name: 'jar'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
-                sh 'echo hola'
-                //sh 'docker-compose build'
-                //sh 'docker-compose up'
+                sh 'docker-compose up'
             }
         } 
         stage('Smoke Test'){
@@ -95,7 +90,7 @@ pipeline {
                      to: 'fernando.hinojosa@live.com'
         }
         always {
-            sh 'docker rmi $(docker images prune)'
+            //sh 'docker image prune'
             cleanWs deleteDirs: true, notFailBuild: true
         }
     }
