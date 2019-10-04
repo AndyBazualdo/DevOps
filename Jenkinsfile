@@ -46,6 +46,7 @@ pipeline {
                 sh 'pwd'
                 sh 'ls -la'
                 sh 'docker-compose up'
+                sh 'docker-compose down'
             }
         } 
         stage('Smoke Test'){
@@ -54,7 +55,7 @@ pipeline {
                 //error("Smoke test results have errors deployment")
             }
         }
-        stage ('Push to docker registry'){
+        stage('Push to docker registry'){
             when {
                 anyOf {branch 'master'; branch 'develop'}
             }
