@@ -68,7 +68,7 @@ pipeline {
                 sh 'ls -al'
                 sh 'pwd'
                 sh 'echo Start updating to docker hub .......'
-                sh 'docker login -username ${DOCKER_USER_NAME} -password ${DOCKER_PASSWORD}'
+                sh 'docker login --username ${DOCKER_USER_NAME} --password ${DOCKER_PASSWORD}'
                 sh 'docker build -t ${DOCKER_REPOSITORY}:${   } .'
                 sh 'docker push ${DOCKER_REPOSITORY}:${BUILD_NUMBER}'
             }
