@@ -42,7 +42,8 @@ pipeline {
         stage('Deploy to Dev'){
             agent{label'master'}
             steps{
-                copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs/*.jar', projectName: '${JOB_NAME}', selector: specific('${BUIL_NUMBER}')
+                //copyArtifacts fingerprintArtifacts: true, parameters: 'build/libs/*.jar', projectName: '${JOB_NAME}', selector: specific('${BUIL_NUMBER}')
+                copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
@@ -54,7 +55,6 @@ pipeline {
         stage('Smoke Test'){
             steps{
                 echo 'Start smoke test on develoment environment'
-                
                 //error("Smoke test results have errors deployment")
             }
         }
