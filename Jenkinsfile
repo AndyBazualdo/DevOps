@@ -51,7 +51,7 @@ pipeline {
         stage('Smoke Test'){
             steps{
                 echo 'Start smoke test on develoment environment'
-                exit 0
+                
                 //error("Smoke test results have errors deployment")
             }
         }
