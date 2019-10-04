@@ -46,6 +46,7 @@ pipeline {
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
+                sh 'echo hola'
                 //sh 'docker-compose build'
                 //sh 'docker-compose up'
             }
