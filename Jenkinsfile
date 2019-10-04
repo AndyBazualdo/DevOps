@@ -63,7 +63,7 @@ pipeline {
                 anyOf {branch 'master'; branch 'develop'}
             }
             steps {
-                sh 'ls -al build/libs/*'
+                SH 'ls -al'
                 sh 'pwd'
                 sh 'echo Start updating to docker hub .......'
                 sh 'echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USER_NAME} --password-stdin'
@@ -93,7 +93,7 @@ pipeline {
                      to: 'fernando.hinojosa@live.com'
         }
         always {
-            sh 'docker rmi $(docker images prune -q)'
+            sh 'docker rmi $(docker images ls -q)'
             cleanWs deleteDirs: true, notFailBuild: true
         }
     }
