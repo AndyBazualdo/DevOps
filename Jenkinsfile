@@ -10,7 +10,6 @@ pipeline {
         //DOCKER_TAG_CURRENT = 'latest'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
-        TAG = BUILD_NUMBER
         SMOKE_TEST_RESULT= ''
         E_TO_E_RESULT= ''
     }
