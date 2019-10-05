@@ -74,6 +74,7 @@ pipeline {
         stage('Promote to QA'){
             agent{label'awt4cv04'}
             steps{
+                unstash 'compose2'
                 sh 'echo deploying into QA enviroment .......'
                 //sh 'docker-compose -f docker-compose-promote build'
                 sh 'docker-compose -f docker-compose-promote up'
