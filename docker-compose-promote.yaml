@@ -1,19 +1,20 @@
 version: '3'
 services:
   web:
-    build: "${DOCKER_REPOSITORY}:${TAG}"
+    build: .
     restart: always
-    links: 
-      - db
+    links:
+    - db
     ports:
-      - 8083:8083
+    - 8083:8083
     network_mode: bridge
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 0123456
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
     ports:
-      - 3306:3306
-    network_mode bridge
+    - 3306:3306
+    network_mode: bridge
