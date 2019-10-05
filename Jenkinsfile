@@ -42,7 +42,7 @@ pipeline {
             steps{
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 stash includes: '**/*/*.jar', name: 'jar'
-                stash includes: '**/*/*.yaml', name: 'compose'
+                stash includes: '**/*.yaml', name: 'compose'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
