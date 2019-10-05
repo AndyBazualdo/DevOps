@@ -75,7 +75,7 @@ pipeline {
                 unstash 'compose'
                 unstash 'jar'
                 sh 'echo deploying into QA enviroment .......'
-                sh 'docker-compose -f docker-compose-promote.yaml up'
+                sh 'docker-compose -f docker-compose-promote.yaml up -d'
             }
         }
         stage('End to end testing'){
