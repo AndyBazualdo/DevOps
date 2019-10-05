@@ -92,8 +92,8 @@ pipeline {
                      to: 'fernando.hinojosa@live.com'
         }
         always {
-            sh 'docker-compose down'
-            sh 'docker stop $(docker ps -q)'
+            //sh 'docker-compose down'
+            //sh 'docker stop $(docker ps -a -q)'
             //sh 'docker-compose -f docker-compose-promote.yaml down'
             sh 'docker image rm $(docker images -q) -f'
             cleanWs deleteDirs: true, notFailBuild: true
