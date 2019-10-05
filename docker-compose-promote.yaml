@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    imagen: "${DOCKER_REPOSITORY}:${BUILD_NUMBER}"
+    image: "${DOCKER_REPOSITORY}:${BUILD_NUMBER}"
     restart: always
     links:
       - db
