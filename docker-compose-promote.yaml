@@ -1,12 +1,12 @@
 version: '3'
 services:
   web:
-    build: .
+    build: "${DOCKER_REPOSITORY}:${TAG}"
     restart: always
     links:
-    - db
+      - db
     ports:
-    - 8083:8083
+      - 8083:8083
     network_mode: bridge
   db:
     image: mysql

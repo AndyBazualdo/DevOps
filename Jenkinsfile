@@ -73,6 +73,7 @@ pipeline {
             agent{label'awt4cv04'}
             steps{
                 unstash 'compose'
+                unstash 'jar'
                 sh 'echo deploying into QA enviroment .......'
                 //sh 'docker-compose -f docker-compose-promote build'
                 sh 'docker-compose -f docker-compose-promote.yaml up'
@@ -93,7 +94,7 @@ pipeline {
         }
         always {
             sh 'docker-compose down'
-            sh 'docker-compose -f docker-compose-promote down'
+            sh 'docker-compose -f docker-compose-promote.yaml down'
             sh 'docker image rm $(docker images -q)'
             cleanWs deleteDirs: true, notFailBuild: true
         }
