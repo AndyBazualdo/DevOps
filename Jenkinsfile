@@ -46,7 +46,7 @@ pipeline {
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
-                sh 'docker-compose up -d'
+                sh 'docker-compose -f docker-compose.yaml up -d'
             }
         } 
         stage('Smoke Test'){
@@ -93,7 +93,7 @@ pipeline {
         }
         always {
             sh 'docker-compose down'
-            sh 'docker-compose -f docker-compose-promote.yaml down'
+            //sh 'docker-compose -f docker-compose-promote.yaml down'
             sh 'docker image rm $(docker images -q)'
             cleanWs deleteDirs: true, notFailBuild: true
         }
