@@ -75,7 +75,7 @@ pipeline {
                 unstash 'compose'
                 sh 'echo deploying into QA enviroment .......'
                 //sh 'docker-compose -f docker-compose-promote build'
-                sh 'docker-compose -f docker-compose-promote up'
+                sh 'docker-compose -f docker-compose-promote up -d'
             }
         }
         stage('End to end testing'){
@@ -92,6 +92,8 @@ pipeline {
                      to: 'fernando.hinojosa@live.com'
         }
         always {
+            sh 'docker-compose down'
+            sh 'docker-compose -f docker-compose-promote down'
             sh 'docker image rm $(docker images -q)'
             cleanWs deleteDirs: true, notFailBuild: true
         }
