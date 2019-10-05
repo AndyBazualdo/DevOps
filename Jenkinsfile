@@ -48,7 +48,7 @@ pipeline {
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
-                sh 'docker-compose up'
+                sh 'docker-compose up -d'
             }
         } 
         stage('Smoke Test'){
