@@ -20,4 +20,3 @@ services:
     command: --init-file /data/application/db.sql
     volumes:
     - ./init.sql:/data/application/db.sql
-    network_mode: bridge
