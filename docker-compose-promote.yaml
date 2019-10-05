@@ -9,12 +9,14 @@ services:
       - 8083:8083
     network_mode: bridge
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:5.7
     restart: always
     environment:
       MYSQL_USER: root
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: ''
+      MYSQL_DATABASE: WebService
     ports:
     - 3306:3306
-    network_mode: bridge
+    command: --init-file /data/application/db.sql
+    volumes:
+    - ./init.sql:/data/application/db.sql
