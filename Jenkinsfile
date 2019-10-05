@@ -23,7 +23,6 @@ pipeline {
                 sh 'printenv'
                 sh 'chmod +x gradlew'
                 sh './gradlew build'
-                stash includes: '**/*/*.yaml', name: 'compose'
             }
             post {
                 always {
@@ -42,8 +41,8 @@ pipeline {
             agent{label'master'}
             steps{
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
-                unstash 'compose'
                 stash includes: '**/*/*.jar', name: 'jar'
+                stash includes: '**/*/*.yaml', name: 'compose'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
