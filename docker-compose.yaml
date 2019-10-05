@@ -16,7 +16,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD:
       volumes:
-       - ./dump.sql:/docker-entrypoint-initdb.d/db.sql
+       - ./dump.sql: '/docker-entrypoint-initdb.d/db.sql'
     ports:
       - 3306:3306
     network_mode: bridge
