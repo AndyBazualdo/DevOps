@@ -23,8 +23,7 @@ pipeline {
                 sh 'printenv'
                 sh 'chmod +x gradlew'
                 sh './gradlew build'
-                stash includes: 'docker-compose.yaml', name: 'compose1'
-                stash includes: 'docker-compose-promote.yaml', name: 'compose2'
+                stash includes: '**/*/*.yaml', name: 'compose'
             }
             post {
                 always {
@@ -43,7 +42,7 @@ pipeline {
             agent{label'master'}
             steps{
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
-                unstash 'compose1'
+                unstash 'compose'
                 stash includes: '**/*/*.jar', name: 'jar'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
@@ -74,7 +73,7 @@ pipeline {
         stage('Promote to QA'){
             agent{label'awt4cv04'}
             steps{
-                unstash 'compose2'
+                unstash 'compose'
                 sh 'echo deploying into QA enviroment .......'
                 //sh 'docker-compose -f docker-compose-promote build'
                 sh 'docker-compose -f docker-compose-promote up'
