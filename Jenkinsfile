@@ -10,7 +10,7 @@ pipeline {
         //DOCKER_TAG_CURRENT = 'latest'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
-        TAG = '${BUILD_NUMBER}'
+        TAG = BUILD_NUMBER
         SMOKE_TEST_RESULT= ''
         E_TO_E_RESULT= ''
     }
@@ -28,6 +28,7 @@ pipeline {
                 always {
                     junit 'build/test-results/test/*.xml'
                     archiveArtifacts 'build/libs/*.jar'
+                    stash includes: '**/*.yaml', name: 'compose'
                 }
             }
         }
@@ -42,7 +43,7 @@ pipeline {
             steps{
                 copyArtifacts filter: '**/*/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 stash includes: '**/*/*.jar', name: 'jar'
-                stash includes: '**/*.yaml', name: 'compose'
+                unstash 'compose'
                 sh 'echo deploying into development .......'
                 sh 'pwd'
                 sh 'ls -la'
@@ -75,7 +76,6 @@ pipeline {
                 unstash 'compose'
                 unstash 'jar'
                 sh 'echo deploying into QA enviroment .......'
-                //sh 'docker-compose -f docker-compose-promote build'
                 sh 'docker-compose -f docker-compose-promote.yaml up'
             }
         }
