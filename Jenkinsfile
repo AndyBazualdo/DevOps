@@ -93,8 +93,8 @@ pipeline {
         }
         always {
             sh 'docker-compose down'
-            //sh 'docker-compose -f docker-compose-promote.yaml down'
-            sh 'docker image rm $(docker images -q)'
+            sh 'docker-compose -f docker-compose-promote.yaml down'
+            sh 'docker image rm $(docker images -q) -f'
             cleanWs deleteDirs: true, notFailBuild: true
         }
     }
