@@ -47,19 +47,9 @@ pipeline {
             }
         } 
         stage('Smoke Test') {
-
             steps {
-                sh 'starting Smoke test'
-                stage('Validate test resul') {
-                    when {
-                        environment name: 'TEST_STATUS', value: 'fail'
-                    }
-                    steps {
-                    sh 'echo Smoke test Failed'
-                    error("Smoke test results have errors deployment")
-                    }
-                    sh 'echo Smoke test Passed'
-                }
+                sh 'echo Smoke test Failed'
+                error("Smoke test results have errors deployment")
             }
         }
         stage('Push to docker registry'){
