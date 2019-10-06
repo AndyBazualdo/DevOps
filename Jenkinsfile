@@ -7,7 +7,7 @@ pipeline {
         //New tag for docker
         DOCKER_TAG_CURRENT = '1.0'
         //Test status flag
-        TEST_STATUS='True'
+        TEST_STATUS='pass'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
     }
@@ -47,13 +47,20 @@ pipeline {
             }
         } 
         stage('Smoke Test'){
-                when {
-                    environment name: 'TEST_STATUS', value: 'false'
-                }
-                steps {
-                    sh 'echo Smoke test Failed'
-                    error("Smoke test results have errors deployment")
-                }
+            when {
+                environment name: 'TEST_STATUS', value: 'fail'
+            }
+            steps {
+                sh 'echo Smoke test Failed'
+                error("Smoke test results have errors deployment")
+            }
+            when {
+                environment name: 'TEST_STATUS', value: 'pass'
+            }
+            steps {
+                sh 'echo Smoke test Failed'
+                error("Smoke test results have errors deployment")
+            }
         }
         stage('Push to docker registry'){
             when {
