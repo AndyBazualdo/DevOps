@@ -46,19 +46,20 @@ pipeline {
                 sh 'docker-compose -f docker-compose.yaml up -d'
             }
         } 
-        stage('Smoke Test'){
-            when {
-                environment name: 'TEST_STATUS', value: 'fail'
-            }
+        stage('Smoke Test') {
+
             steps {
-                sh 'echo Smoke test Failed'
-                error("Smoke test results have errors deployment")
-            }
-            when {
-                environment name: 'TEST_STATUS', value: 'pass'
-            }
-            steps {
-                sh 'echo Smoke test Passed'
+                sh 'starting Smoke test'
+                stage('Validate test resul') {
+                    when {
+                        environment name: 'TEST_STATUS', value: 'fail'
+                    }
+                    steps {
+                    sh 'echo Smoke test Failed'
+                    error("Smoke test results have errors deployment")
+                    }
+                    sh 'echo Smoke test Passed'
+                }
             }
         }
         stage('Push to docker registry'){
