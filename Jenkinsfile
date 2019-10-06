@@ -89,6 +89,7 @@ pipeline {
             sh 'docker-compose down'
             sh 'docker stop $(docker ps -a -q)'
             sh 'docker image rm $(docker images -q) -f'
+            sh 'docker rm $(docker ps -a -q) -f'
             cleanWs deleteDirs: true, notFailBuild: true
         }
     }
