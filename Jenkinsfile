@@ -6,7 +6,7 @@ pipeline {
         DOCKER_PASSWORD = 'Bichito123'
         //New tag for docker
         DOCKER_TAG_NEW = '1.1'
-        DOCKER_TAG_CURRENT = '1.0'
+        DOCKER_TAG_CURRENT = currentBuild.previousBuild.number
         //DOCKER_TAG_CURRENT = 'latest'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
