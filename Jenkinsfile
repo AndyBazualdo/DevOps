@@ -6,12 +6,9 @@ pipeline {
         DOCKER_PASSWORD = 'Bichito123'
         //New tag for docker
         DOCKER_TAG_NEW = '1.1'
-        DOCKER_TAG_CURRENT = (${BUILD_NUMBER}-1)
-        //DOCKER_TAG_CURRENT = 'latest'
+        DOCKER_TAG_CURRENT = '1.0'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
-        SMOKE_TEST_RESULT= ''
-        E_TO_E_RESULT= ''
     }
     stages {
         stage('Build') {
@@ -19,7 +16,6 @@ pipeline {
                 docker { image '${DOCKER_REPOSITORY}:${DOCKER_TAG_CURRENT}' }
             }
             steps {
-                sh 'printenv'
                 sh 'chmod +x gradlew'
                 sh './gradlew build'
             }
@@ -34,7 +30,7 @@ pipeline {
         stage('SonarCloud') {
             steps {
                 sh 'chmod +x gradlew'
-                //sh './gradlew sonarqube -Dsonar.projectKey=andybazualdo -Dsonar.organization=andybazualdo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=16e96c988a578b8f8dd2b8bf381c19fcc11194f3'
+                sh './gradlew sonarqube -Dsonar.projectKey=andybazualdo -Dsonar.organization=andybazualdo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=16e96c988a578b8f8dd2b8bf381c19fcc11194f3'
             }
         }
         stage('Deploy to Dev'){
@@ -61,8 +57,6 @@ pipeline {
             }
             steps {
                 unstash 'jar'
-                sh 'ls -al'
-                sh 'pwd'
                 sh 'echo Start updating to docker hub .......'
                 sh 'docker login --username ${DOCKER_USER_NAME} --password ${DOCKER_PASSWORD}'
                 sh 'docker build -t ${DOCKER_REPOSITORY}:${BUILD_NUMBER} .'
@@ -94,7 +88,6 @@ pipeline {
         always {
             sh 'docker-compose down'
             sh 'docker stop $(docker ps -a -q)'
-            //sh 'docker-compose -f docker-compose-promote.yaml down'
             sh 'docker image rm $(docker images -q) -f'
             cleanWs deleteDirs: true, notFailBuild: true
         }
