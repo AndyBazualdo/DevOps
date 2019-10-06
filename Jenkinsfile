@@ -7,7 +7,7 @@ pipeline {
         //New tag for docker
         DOCKER_TAG_CURRENT = '1.0'
         //Test status flag
-        TEST_STATUS='False'
+        TEST_STATUS='True'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
     }
