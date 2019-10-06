@@ -50,7 +50,7 @@ pipeline {
             steps{
                 echo 'Start smoke test on develoment environment'
                 when {
-                    TEST_STATUS 'False'
+                    environment name: 'TEST_STATUS', value: 'false'
                 }
                 steps {
                     sh 'echo Start updating to docker hub .......'
