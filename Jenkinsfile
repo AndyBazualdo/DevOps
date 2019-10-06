@@ -5,8 +5,9 @@ pipeline {
         DOCKER_USER_NAME = 'gato756'
         DOCKER_PASSWORD = 'Bichito123'
         //New tag for docker
-        DOCKER_TAG_NEW = '1.1'
         DOCKER_TAG_CURRENT = '1.0'
+        //Test status flag
+        TEST_STATUS='False'
         //Docker repository
         DOCKER_REPOSITORY = 'gato756/awt04webservice_1.0'
     }
@@ -48,7 +49,13 @@ pipeline {
         stage('Smoke Test'){
             steps{
                 echo 'Start smoke test on develoment environment'
-                //error("Smoke test results have errors deployment")
+                when {
+                    TEST_STATUS 'False'
+                }
+                steps {
+                    sh 'echo Start updating to docker hub .......'
+                    error("Smoke test results have errors deployment")
+                }
             }
         }
         stage('Push to docker registry'){
