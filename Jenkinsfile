@@ -58,8 +58,7 @@ pipeline {
                 environment name: 'TEST_STATUS', value: 'pass'
             }
             steps {
-                sh 'echo Smoke test Failed'
-                error("Smoke test results have errors deployment")
+                sh 'echo Smoke test Passed'
             }
         }
         stage('Push to docker registry'){
