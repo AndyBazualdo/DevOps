@@ -49,12 +49,15 @@ pipeline {
         stage('Smoke Test'){
             steps{
                 echo 'Start smoke test on develoment environment'
-                when {
-                    environment name: 'TEST_STATUS', value: 'false'
-                }
-                steps {
-                    sh 'echo Start updating to docker hub .......'
-                    error("Smoke test results have errors deployment")
+                stage ('validate Smoke Test') {
+                    when {
+                        environment name: 'TEST_STATUS', value: 'false'
+                    }
+                    steps {
+                        sh 'echo Smoke test Failed'
+                        error("Smoke test results have errors deployment")
+                    }
+                    sh 'echo Smoke test Passed'
                 }
             }
         }
